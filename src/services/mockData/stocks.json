@@ -1,0 +1,167 @@
+[
+  {
+    "Id": 1,
+    "symbol": "BBCA",
+    "name": "Bank Central Asia Tbk",
+    "price": 8775,
+    "change": 125,
+    "changePercent": 1.44,
+    "volume": 15420000,
+    "marketCap": 1055000000000000,
+    "sector": "Financial Services"
+  },
+  {
+    "Id": 2,
+    "symbol": "BBRI",
+    "name": "Bank Rakyat Indonesia Tbk",
+    "price": 4580,
+    "change": -20,
+    "changePercent": -0.43,
+    "volume": 24680000,
+    "marketCap": 553000000000000,
+    "sector": "Financial Services"
+  },
+  {
+    "Id": 3,
+    "symbol": "BMRI",
+    "name": "Bank Mandiri Tbk",
+    "price": 9100,
+    "change": 75,
+    "changePercent": 0.83,
+    "volume": 18950000,
+    "marketCap": 432000000000000,
+    "sector": "Financial Services"
+  },
+  {
+    "Id": 4,
+    "symbol": "TLKM",
+    "name": "Telkom Indonesia Tbk",
+    "price": 3150,
+    "change": -50,
+    "changePercent": -1.56,
+    "volume": 12350000,
+    "marketCap": 312000000000000,
+    "sector": "Communication Services"
+  },
+  {
+    "Id": 5,
+    "symbol": "ASII",
+    "name": "Astra International Tbk",
+    "price": 5200,
+    "change": 100,
+    "changePercent": 1.96,
+    "volume": 8750000,
+    "marketCap": 378000000000000,
+    "sector": "Consumer Discretionary"
+  },
+  {
+    "Id": 6,
+    "symbol": "UNVR",
+    "name": "Unilever Indonesia Tbk",
+    "price": 2420,
+    "change": -30,
+    "changePercent": -1.22,
+    "volume": 5680000,
+    "marketCap": 175000000000000,
+    "sector": "Consumer Staples"
+  },
+  {
+    "Id": 7,
+    "symbol": "INDF",
+    "name": "Indofood Sukses Makmur Tbk",
+    "price": 6800,
+    "change": 150,
+    "changePercent": 2.26,
+    "volume": 7250000,
+    "marketCap": 159000000000000,
+    "sector": "Consumer Staples"
+  },
+  {
+    "Id": 8,
+    "symbol": "GOTO",
+    "name": "GoTo Gojek Tokopedia Tbk",
+    "price": 68,
+    "change": 2,
+    "changePercent": 3.03,
+    "volume": 342500000,
+    "marketCap": 98000000000000,
+    "sector": "Technology"
+  },
+  {
+    "Id": 9,
+    "symbol": "AMMN",
+    "name": "Amman Mineral Internasional Tbk",
+    "price": 8650,
+    "change": -125,
+    "changePercent": -1.42,
+    "volume": 6750000,
+    "marketCap": 145000000000000,
+    "sector": "Materials"
+  },
+  {
+    "Id": 10,
+    "symbol": "ICBP",
+    "name": "Indofood CBP Sukses Makmur Tbk",
+    "price": 9900,
+    "change": 200,
+    "changePercent": 2.06,
+    "volume": 4820000,
+    "marketCap": 97000000000000,
+    "sector": "Consumer Staples"
+  },
+  {
+    "Id": 11,
+    "symbol": "ADRO",
+    "name": "Adaro Energy Tbk",
+    "price": 2780,
+    "change": -40,
+    "changePercent": -1.42,
+    "volume": 185000000,
+    "marketCap": 178000000000000,
+    "sector": "Energy"
+  },
+  {
+    "Id": 12,
+    "symbol": "ITMG",
+    "name": "Indo Tambangraya Megah Tbk",
+    "price": 18500,
+    "change": 300,
+    "changePercent": 1.65,
+    "volume": 2950000,
+    "marketCap": 74000000000000,
+    "sector": "Energy"
+  },
+  {
+    "Id": 13,
+    "symbol": "KLBF",
+    "name": "Kalbe Farma Tbk",
+    "price": 1455,
+    "change": 15,
+    "changePercent": 1.04,
+    "volume": 26800000,
+    "marketCap": 68000000000000,
+    "sector": "Healthcare"
+  },
+  {
+    "Id": 14,
+    "symbol": "SMGR",
+    "name": "Semen Indonesia Tbk",
+    "price": 4800,
+    "change": -75,
+    "changePercent": -1.54,
+    "volume": 12650000,
+    "marketCap": 57000000000000,
+    "sector": "Materials"
+  },
+  {
+    "Id": 15,
+    "symbol": "ANTM",
+    "name": "Aneka Tambang Tbk",
+    "price": 1370,
+    "change": 25,
+    "changePercent": 1.86,
+    "volume": 98500000,
+    "marketCap": 82000000000000,
+    "sector": "Materials"
+  }
+]

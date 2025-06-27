@@ -1,0 +1,37 @@
+[
+  {
+    "Id": 1,
+    "indicatorType": "RSI",
+    "operator": ">",
+    "threshold": 70,
+    "enabled": false
+  },
+  {
+    "Id": 2,
+    "indicatorType": "RSI",
+    "operator": "<",
+    "threshold": 30,
+    "enabled": false
+  },
+  {
+    "Id": 3,
+    "indicatorType": "MACD",
+    "operator": ">",
+    "threshold": 0,
+    "enabled": false
+  },
+  {
+    "Id": 4,
+    "indicatorType": "SMA_20",
+    "operator": ">",
+    "threshold": 5000,
+    "enabled": false
+  },
+  {
+    "Id": 5,
+    "indicatorType": "EMA_12",
+    "operator": ">",
+    "threshold": 5000,
+    "enabled": false
+  }
+]

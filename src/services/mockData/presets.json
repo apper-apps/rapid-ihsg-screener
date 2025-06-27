@@ -1,0 +1,59 @@
+[
+  {
+    "Id": 1,
+    "name": "Oversold Opportunities",
+    "description": "Stocks with RSI below 30 and positive MACD momentum",
+    "filters": [
+      {
+        "indicatorType": "RSI",
+        "operator": "<",
+        "threshold": 30,
+        "enabled": true
+      },
+      {
+        "indicatorType": "MACD",
+        "operator": ">",
+        "threshold": 0,
+        "enabled": true
+      }
+    ]
+  },
+  {
+    "Id": 2,
+    "name": "Momentum Breakouts",
+    "description": "Strong momentum stocks with RSI above 60 and bullish MACD",
+    "filters": [
+      {
+        "indicatorType": "RSI",
+        "operator": ">",
+        "threshold": 60,
+        "enabled": true
+      },
+      {
+        "indicatorType": "MACD",
+        "operator": ">",
+        "threshold": 10,
+        "enabled": true
+      }
+    ]
+  },
+  {
+    "Id": 3,
+    "name": "Moving Average Crossover",
+    "description": "Price above both SMA and EMA with strong volume",
+    "filters": [
+      {
+        "indicatorType": "SMA_20",
+        "operator": "<",
+        "threshold": 999999,
+        "enabled": true
+      },
+      {
+        "indicatorType": "EMA_12",
+        "operator": "<",
+        "threshold": 999999,
+        "enabled": true
+      }
+    ]
+  }
+]
