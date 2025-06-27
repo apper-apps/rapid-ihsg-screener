@@ -1,6 +1,5 @@
-import stockData from '@/services/mockData/stocks.json';
-import indicatorData from '@/services/mockData/indicators.json';
-
+import indicatorData from "@/services/mockData/indicators.json";
+import stockData from "@/services/mockData/stocks.json";
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 class StockService {
@@ -134,7 +133,7 @@ async screenStocks(filters) {
     return Math.round((sum / period) * 100) / 100;
   }
 
-  calculateEMA(prices, period) {
+calculateEMA(prices, period) {
     if (prices.length < period) return null;
     
     const multiplier = 2 / (period + 1);

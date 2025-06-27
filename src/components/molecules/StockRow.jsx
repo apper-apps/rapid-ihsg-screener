@@ -1,8 +1,9 @@
-import { motion } from 'framer-motion';
-import Badge from '@/components/atoms/Badge';
-import ApperIcon from '@/components/ApperIcon';
-import Sparkline from '@/components/molecules/Sparkline';
-const StockRow = ({ stock, index }) => {
+import { motion } from "framer-motion";
+import React from "react";
+import ApperIcon from "@/components/ApperIcon";
+import Sparkline from "@/components/molecules/Sparkline";
+import Badge from "@/components/atoms/Badge";
+const StockRow = ({ stock, index, onClick }) => {
   const getSignalBadge = (signal) => {
     const variants = {
       bullish: 'bullish',
@@ -43,12 +44,13 @@ const StockRow = ({ stock, index }) => {
     return new Intl.NumberFormat('id-ID').format(price);
   };
 
-  return (
+return (
     <motion.tr
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05 }}
-      className="border-b border-surface-100 hover:bg-surface-50 transition-colors duration-150"
+      onClick={() => onClick?.(stock)}
+      className="border-b border-surface-100 hover:bg-surface-50 transition-colors duration-150 cursor-pointer"
     >
       <td className="px-4 py-3">
         <div className="flex flex-col">

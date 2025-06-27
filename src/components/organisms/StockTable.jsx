@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import Card from '@/components/atoms/Card';
-import Button from '@/components/atoms/Button';
-import StockRow from '@/components/molecules/StockRow';
-import SkeletonLoader from '@/components/molecules/SkeletonLoader';
-import EmptyState from '@/components/molecules/EmptyState';
-import ErrorState from '@/components/molecules/ErrorState';
-import ApperIcon from '@/components/ApperIcon';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import ApperIcon from "@/components/ApperIcon";
+import StockRow from "@/components/molecules/StockRow";
+import SkeletonLoader from "@/components/molecules/SkeletonLoader";
+import EmptyState from "@/components/molecules/EmptyState";
+import ErrorState from "@/components/molecules/ErrorState";
+import Card from "@/components/atoms/Card";
+import Button from "@/components/atoms/Button";
 
 const StockTable = ({ 
   stocks, 
@@ -27,21 +27,25 @@ const StockTable = ({
     }
   };
 
-  const sortedStocks = [...stocks].sort((a, b) => {
-    let aValue = a[sortField];
-    let bValue = b[sortField];
+const sortedStocks = React.useMemo(() => {
+    if (!stocks || stocks.length === 0) return [];
     
-    if (typeof aValue === 'string') {
-      aValue = aValue.toLowerCase();
-      bValue = bValue.toLowerCase();
-    }
-    
-    if (sortDirection === 'asc') {
-      return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
-    } else {
-      return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
-    }
-  });
+    return [...stocks].sort((a, b) => {
+      let aValue = a[sortField];
+      let bValue = b[sortField];
+      
+      if (typeof aValue === 'string') {
+        aValue = aValue.toLowerCase();
+        bValue = bValue.toLowerCase();
+      }
+      
+      if (sortDirection === 'asc') {
+        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
+      } else {
+        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
+      }
+    });
+  }, [stocks, sortField, sortDirection]);
 
   const SortButton = ({ field, children }) => (
     <Button
@@ -91,7 +95,7 @@ const StockTable = ({
     );
   }
 
-  if (stocks.length === 0) {
+if (!stocks || stocks.length === 0) {
     return (
       <Card className={className}>
         <div className="p-4 border-b border-surface-100">
@@ -115,8 +119,8 @@ const StockTable = ({
           <h2 className="font-heading font-semibold text-surface-900">
             Stock Results
           </h2>
-          <span className="text-sm text-surface-600">
-            {stocks.length} stocks found
+<span className="text-sm text-surface-600">
+            {stocks?.length || 0} stocks found
           </span>
         </div>
       </div>
@@ -148,7 +152,7 @@ const StockTable = ({
             </tr>
           </thead>
           <tbody>
-            {sortedStocks.map((stock, index) => (
+{sortedStocks.map((stock, index) => (
               <StockRow 
                 key={stock.Id} 
                 stock={stock} 
