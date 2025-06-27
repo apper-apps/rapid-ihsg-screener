@@ -1,18 +1,20 @@
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { toast } from 'react-toastify';
-import Header from '@/components/organisms/Header';
-import FilterPanel from '@/components/organisms/FilterPanel';
-import StockTable from '@/components/organisms/StockTable';
-import stockService from '@/services/api/stockService';
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { toast } from "react-toastify";
+import stockService from "@/services/api/stockService";
+import Header from "@/components/organisms/Header";
+import StockDetailModal from "@/components/organisms/StockDetailModal";
+import StockTable from "@/components/organisms/StockTable";
+import FilterPanel from "@/components/organisms/FilterPanel";
 
 const Home = () => {
-  const [stocks, setStocks] = useState([]);
+const [stocks, setStocks] = useState([]);
   const [allStocks, setAllStocks] = useState([]);
   const [filters, setFilters] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
+  const [selectedStock, setSelectedStock] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const loadStocks = async () => {
     setLoading(true);
     setError(null);
@@ -129,6 +131,16 @@ const Home = () => {
     } catch (err) {
       toast.error('Failed to export data');
     }
+};
+
+  const handleStockClick = (stock) => {
+    setSelectedStock(stock);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedStock(null);
   };
 
   useEffect(() => {
@@ -167,14 +179,21 @@ const Home = () => {
           transition={{ delay: 0.2 }}
           className="flex-1 overflow-y-auto p-6"
         >
-          <StockTable
+<StockTable
             stocks={stocks}
             loading={loading}
             error={error}
             onRetry={loadStocks}
+            onStockClick={handleStockClick}
           />
         </motion.main>
       </div>
+
+      <StockDetailModal
+        stock={selectedStock}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      />
     </div>
   );
 };

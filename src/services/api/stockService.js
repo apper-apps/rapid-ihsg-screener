@@ -143,7 +143,60 @@ calculateEMA(prices, period) {
       ema = (prices[i] * multiplier) + (ema * (1 - multiplier));
     }
     
-    return Math.round(ema * 100) / 100;
+return Math.round(ema * 100) / 100;
+  }
+
+  async getHistoricalData(stockId, period = '1M') {
+    await delay(300);
+    const stock = stockData.find(item => item.Id === parseInt(stockId, 10));
+    if (!stock) {
+      throw new Error('Stock not found');
+    }
+
+    // Generate mock historical data based on period
+    const periods = {
+      '1D': 1,
+      '1W': 7, 
+      '1M': 30,
+      '3M': 90,
+      '6M': 180,
+      '1Y': 365
+    };
+
+    const days = periods[period] || 30;
+    const data = [];
+    const basePrice = stock.price;
+    
+    for (let i = days; i >= 0; i--) {
+      const date = new Date();
+      date.setDate(date.getDate() - i);
+      
+      // Generate realistic OHLCV data with some volatility
+      const volatility = 0.02 + (Math.random() * 0.03);
+      const priceChange = (Math.random() - 0.5) * volatility;
+      const open = basePrice * (1 + priceChange);
+      const high = open * (1 + Math.random() * 0.02);
+      const low = open * (1 - Math.random() * 0.02);
+      const close = low + (Math.random() * (high - low));
+      const volume = stock.volume * (0.5 + Math.random());
+
+      data.push({
+        timestamp: date.toISOString(),
+        open: Math.round(open),
+        high: Math.round(high), 
+        low: Math.round(low),
+        close: Math.round(close),
+        volume: Math.round(volume),
+        sma20: i < days - 20 ? Math.round(close * (0.98 + Math.random() * 0.04)) : null,
+        ema20: i < days - 20 ? Math.round(close * (0.99 + Math.random() * 0.02)) : null
+      });
+    }
+
+    return {
+      symbol: stock.symbol,
+      period,
+      data
+    };
   }
 }
 

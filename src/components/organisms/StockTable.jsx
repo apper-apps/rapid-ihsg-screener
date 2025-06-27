@@ -13,6 +13,7 @@ const StockTable = ({
   loading, 
   error, 
   onRetry,
+  onStockClick,
   className = ''
 }) => {
   const [sortField, setSortField] = useState('symbol');
@@ -157,6 +158,7 @@ if (!stocks || stocks.length === 0) {
                 key={stock.Id} 
                 stock={stock} 
                 index={index}
+                onClick={onStockClick}
               />
             ))}
           </tbody>
