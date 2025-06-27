@@ -17,12 +17,12 @@ class PresetService {
     return { ...preset };
   }
 
-  async create(presetData) {
+async create(newPresetData) {
     await delay(250);
     const newId = Math.max(...presetData.map(p => p.Id), 0) + 1;
     const newPreset = {
       Id: newId,
-      ...presetData,
+      ...newPresetData,
       createdAt: new Date().toISOString()
     };
     return { ...newPreset };
