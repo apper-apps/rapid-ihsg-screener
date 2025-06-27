@@ -17,6 +17,10 @@ const indicatorOptions = [
     { value: 'MACD', label: 'MACD' },
     { value: 'SMA_20', label: 'SMA (20)' },
     { value: 'EMA_12', label: 'EMA (12)' },
+    { value: 'MA_10', label: 'MA (10)' },
+    { value: 'MA_50', label: 'MA (50)' },
+    { value: 'EMA_26', label: 'EMA (26)' },
+    { value: 'EMA_50', label: 'EMA (50)' },
     { value: 'PRICE', label: 'Stock Price' }
   ];
 

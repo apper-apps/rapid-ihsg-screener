@@ -477,6 +477,486 @@
     "type": "MACD",
     "value": 11.2,
     "signal": "bullish",
+"timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 61,
+    "stockId": 1,
+    "type": "MA_10",
+    "value": 8680,
+    "signal": "bullish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 62,
+    "stockId": 1,
+    "type": "MA_50",
+    "value": 8580,
+    "signal": "bullish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 63,
+    "stockId": 1,
+    "type": "EMA_26",
+    "value": 8705,
+    "signal": "bullish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 64,
+    "stockId": 1,
+    "type": "EMA_50",
+    "value": 8590,
+    "signal": "bullish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 65,
+    "stockId": 2,
+    "type": "MA_10",
+    "value": 4610,
+    "signal": "bearish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 66,
+    "stockId": 2,
+    "type": "MA_50",
+    "value": 4680,
+    "signal": "bearish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 67,
+    "stockId": 2,
+    "type": "EMA_26",
+    "value": 4605,
+    "signal": "bearish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 68,
+    "stockId": 2,
+    "type": "EMA_50",
+    "value": 4675,
+    "signal": "bearish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 69,
+    "stockId": 3,
+    "type": "MA_10",
+    "value": 9070,
+    "signal": "bullish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 70,
+    "stockId": 3,
+    "type": "MA_50",
+    "value": 8980,
+    "signal": "bullish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 71,
+    "stockId": 3,
+    "type": "EMA_26",
+    "value": 9065,
+    "signal": "bullish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 72,
+    "stockId": 3,
+    "type": "EMA_50",
+    "value": 8995,
+    "signal": "bullish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 73,
+    "stockId": 4,
+    "type": "MA_10",
+    "value": 3175,
+    "signal": "bearish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 74,
+    "stockId": 4,
+    "type": "MA_50",
+    "value": 3220,
+    "signal": "bearish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 75,
+    "stockId": 4,
+    "type": "EMA_26",
+    "value": 3170,
+    "signal": "bearish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 76,
+    "stockId": 4,
+    "type": "EMA_50",
+    "value": 3215,
+    "signal": "bearish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 77,
+    "stockId": 5,
+    "type": "MA_10",
+    "value": 5175,
+    "signal": "bullish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 78,
+    "stockId": 5,
+    "type": "MA_50",
+    "value": 5080,
+    "signal": "bullish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 79,
+    "stockId": 5,
+    "type": "EMA_26",
+    "value": 5170,
+    "signal": "bullish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 80,
+    "stockId": 5,
+    "type": "EMA_50",
+    "value": 5095,
+    "signal": "bullish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 81,
+    "stockId": 6,
+    "type": "MA_10",
+    "value": 2440,
+    "signal": "bearish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 82,
+    "stockId": 6,
+    "type": "MA_50",
+    "value": 2480,
+    "signal": "bearish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 83,
+    "stockId": 6,
+    "type": "EMA_26",
+    "value": 2445,
+    "signal": "bearish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 84,
+    "stockId": 6,
+    "type": "EMA_50",
+    "value": 2475,
+    "signal": "bearish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 85,
+    "stockId": 7,
+    "type": "MA_10",
+    "value": 6745,
+    "signal": "bullish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 86,
+    "stockId": 7,
+    "type": "MA_50",
+    "value": 6650,
+    "signal": "bullish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 87,
+    "stockId": 7,
+    "type": "EMA_26",
+    "value": 6740,
+    "signal": "bullish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 88,
+    "stockId": 7,
+    "type": "EMA_50",
+    "value": 6665,
+    "signal": "bullish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 89,
+    "stockId": 8,
+    "type": "MA_10",
+    "value": 66,
+    "signal": "bullish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 90,
+    "stockId": 8,
+    "type": "MA_50",
+    "value": 63,
+    "signal": "bullish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 91,
+    "stockId": 8,
+    "type": "EMA_26",
+    "value": 65,
+    "signal": "bullish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 92,
+    "stockId": 8,
+    "type": "EMA_50",
+    "value": 64,
+    "signal": "bullish",
+    "timestamp": "1/15/2024 9:30:00 AMZ"
+  },
+  {
+    "Id": 93,
+    "stockId": 9,
+    "type": "MA_10",
+    "value": 8695,
+    "signal": "bearish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 94,
+    "stockId": 9,
+    "type": "MA_50",
+    "value": 8780,
+    "signal": "bearish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 95,
+    "stockId": 9,
+    "type": "EMA_26",
+    "value": 8690,
+    "signal": "bearish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 96,
+    "stockId": 9,
+    "type": "EMA_50",
+    "value": 8770,
+    "signal": "bearish",
+    "timestamp": "1/15/2024 9:30:00 AMZ"
+  },
+  {
+    "Id": 97,
+    "stockId": 10,
+    "type": "MA_10",
+    "value": 9805,
+    "signal": "bullish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 98,
+    "stockId": 10,
+    "type": "MA_50",
+    "value": 9680,
+    "signal": "bullish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 99,
+    "stockId": 10,
+    "type": "EMA_26",
+    "value": 9800,
+    "signal": "bullish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 100,
+    "stockId": 10,
+    "type": "EMA_50",
+    "value": 9695,
+    "signal": "bullish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 101,
+    "stockId": 11,
+    "type": "MA_10",
+    "value": 2805,
+    "signal": "bearish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 102,
+    "stockId": 11,
+    "type": "MA_50",
+    "value": 2850,
+    "signal": "bearish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 103,
+    "stockId": 11,
+    "type": "EMA_26",
+    "value": 2800,
+    "signal": "bearish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 104,
+    "stockId": 11,
+    "type": "EMA_50",
+    "value": 2845,
+    "signal": "bearish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 105,
+    "stockId": 12,
+    "type": "MA_10",
+    "value": 18320,
+    "signal": "bullish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 106,
+    "stockId": 12,
+    "type": "MA_50",
+    "value": 18050,
+    "signal": "bullish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 107,
+    "stockId": 12,
+    "type": "EMA_26",
+    "value": 18310,
+    "signal": "bullish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 108,
+    "stockId": 12,
+    "type": "EMA_50",
+    "value": 18080,
+    "signal": "bullish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 109,
+    "stockId": 13,
+    "type": "MA_10",
+    "value": 1445,
+    "signal": "bullish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 110,
+    "stockId": 13,
+    "type": "MA_50",
+    "value": 1420,
+    "signal": "bullish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 111,
+    "stockId": 13,
+    "type": "EMA_26",
+    "value": 1448,
+    "signal": "bullish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 112,
+    "stockId": 13,
+    "type": "EMA_50",
+    "value": 1425,
+    "signal": "bullish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 113,
+    "stockId": 14,
+    "type": "MA_10",
+    "value": 4830,
+    "signal": "bearish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 114,
+    "stockId": 14,
+    "type": "MA_50",
+    "value": 4890,
+    "signal": "bearish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 115,
+    "stockId": 14,
+    "type": "EMA_26",
+    "value": 4835,
+    "signal": "bearish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 116,
+    "stockId": 14,
+    "type": "EMA_50",
+    "value": 4885,
+    "signal": "bearish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 117,
+    "stockId": 15,
+    "type": "MA_10",
+    "value": 1360,
+    "signal": "bullish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 118,
+    "stockId": 15,
+    "type": "MA_50",
+    "value": 1335,
+    "signal": "bullish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 119,
+    "stockId": 15,
+    "type": "EMA_26",
+    "value": 1358,
+    "signal": "bullish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 120,
+    "stockId": 15,
+    "type": "EMA_50",
+    "value": 1340,
+    "signal": "bullish",
     "timestamp": "2024-01-15T09:30:00Z"
   }
 ]
