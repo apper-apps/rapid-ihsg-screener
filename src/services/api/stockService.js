@@ -38,7 +38,7 @@ class StockService {
     });
   }
 
-  async screenStocks(filters) {
+async screenStocks(filters) {
     await delay(300);
     const stocksWithIndicators = await this.getAllWithIndicators();
     
@@ -50,6 +50,32 @@ class StockService {
       return filters.every(filter => {
         if (!filter.enabled) return true;
         
+        // Handle price-based filters
+        if (filter.indicatorType === 'PRICE') {
+          const { operator, threshold, maxThreshold } = filter;
+          const price = stock.price;
+          
+          switch (operator) {
+            case '>':
+              return price > threshold;
+            case '<':
+              return price < threshold;
+            case '>=':
+              return price >= threshold;
+            case '<=':
+              return price <= threshold;
+            case '=':
+              return Math.abs(price - threshold) < 0.01;
+            case 'between':
+              const min = Math.min(threshold, maxThreshold || threshold);
+              const max = Math.max(threshold, maxThreshold || threshold);
+              return price >= min && price <= max;
+            default:
+              return true;
+          }
+        }
+        
+        // Handle technical indicator filters
         const indicator = stock.indicators.find(ind => ind.type === filter.indicatorType);
         if (!indicator) return false;
         
