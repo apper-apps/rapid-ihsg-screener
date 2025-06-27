@@ -952,11 +952,491 @@
     "timestamp": "2024-01-15T09:30:00Z"
   },
   {
-    "Id": 120,
+"Id": 120,
     "stockId": 15,
     "type": "EMA_50",
     "value": 1340,
     "signal": "bullish",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 121,
+    "stockId": 1,
+    "type": "BB_UPPER",
+    "value": 8950,
+    "signal": "resistance",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 122,
+    "stockId": 1,
+    "type": "BB_LOWER",
+    "value": 8350,
+    "signal": "support",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 123,
+    "stockId": 1,
+    "type": "BB_MIDDLE",
+    "value": 8650,
+    "signal": "neutral",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 124,
+    "stockId": 1,
+    "type": "ATR",
+    "value": 185.4,
+    "signal": "high_volatility",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 125,
+    "stockId": 2,
+    "type": "BB_UPPER",
+    "value": 4850,
+    "signal": "resistance",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 126,
+    "stockId": 2,
+    "type": "BB_LOWER",
+    "value": 4390,
+    "signal": "support",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 127,
+    "stockId": 2,
+    "type": "BB_MIDDLE",
+    "value": 4620,
+    "signal": "neutral",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 128,
+    "stockId": 2,
+    "type": "ATR",
+    "value": 142.8,
+    "signal": "medium_volatility",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 129,
+    "stockId": 3,
+    "type": "BB_UPPER",
+    "value": 9380,
+    "signal": "resistance",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 130,
+    "stockId": 3,
+    "type": "BB_LOWER",
+    "value": 8720,
+    "signal": "support",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 131,
+    "stockId": 3,
+    "type": "BB_MIDDLE",
+    "value": 9050,
+    "signal": "neutral",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 132,
+    "stockId": 3,
+    "type": "ATR",
+    "value": 198.2,
+    "signal": "high_volatility",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 133,
+    "stockId": 4,
+    "type": "BB_UPPER",
+    "value": 3350,
+    "signal": "resistance",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 134,
+    "stockId": 4,
+    "type": "BB_LOWER",
+    "value": 3010,
+    "signal": "support",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 135,
+    "stockId": 4,
+    "type": "BB_MIDDLE",
+    "value": 3180,
+    "signal": "neutral",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 136,
+    "stockId": 4,
+    "type": "ATR",
+    "value": 95.6,
+    "signal": "low_volatility",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 137,
+    "stockId": 5,
+    "type": "BB_UPPER",
+    "value": 5450,
+    "signal": "resistance",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 138,
+    "stockId": 5,
+    "type": "BB_LOWER",
+    "value": 4850,
+    "signal": "support",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 139,
+    "stockId": 5,
+    "type": "BB_MIDDLE",
+    "value": 5150,
+    "signal": "neutral",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 140,
+    "stockId": 5,
+    "type": "ATR",
+    "value": 176.3,
+    "signal": "high_volatility",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 141,
+    "stockId": 6,
+    "type": "BB_UPPER",
+    "value": 2620,
+    "signal": "resistance",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 142,
+    "stockId": 6,
+    "type": "BB_LOWER",
+    "value": 2280,
+    "signal": "support",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 143,
+    "stockId": 6,
+    "type": "BB_MIDDLE",
+    "value": 2450,
+    "signal": "neutral",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 144,
+    "stockId": 6,
+    "type": "ATR",
+    "value": 78.4,
+    "signal": "low_volatility",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 145,
+    "stockId": 7,
+    "type": "BB_UPPER",
+    "value": 7050,
+    "signal": "resistance",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 146,
+    "stockId": 7,
+    "type": "BB_LOWER",
+    "value": 6390,
+    "signal": "support",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 147,
+    "stockId": 7,
+    "type": "BB_MIDDLE",
+    "value": 6720,
+    "signal": "neutral",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 148,
+    "stockId": 7,
+    "type": "ATR",
+    "value": 154.7,
+    "signal": "medium_volatility",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 149,
+    "stockId": 8,
+    "type": "BB_UPPER",
+    "value": 68.5,
+    "signal": "resistance",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 150,
+    "stockId": 8,
+    "type": "BB_LOWER",
+    "value": 61.5,
+    "signal": "support",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 151,
+    "stockId": 8,
+    "type": "BB_MIDDLE",
+    "value": 65,
+    "signal": "neutral",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 152,
+    "stockId": 8,
+    "type": "ATR",
+    "value": 2.8,
+    "signal": "low_volatility",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 153,
+    "stockId": 9,
+    "type": "BB_UPPER",
+    "value": 9120,
+    "signal": "resistance",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 154,
+    "stockId": 9,
+    "type": "BB_LOWER",
+    "value": 8320,
+    "signal": "support",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 155,
+    "stockId": 9,
+    "type": "BB_MIDDLE",
+    "value": 8720,
+    "signal": "neutral",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 156,
+    "stockId": 9,
+    "type": "ATR",
+    "value": 167.8,
+    "signal": "medium_volatility",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 157,
+    "stockId": 10,
+    "type": "BB_UPPER",
+    "value": 10180,
+    "signal": "resistance",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 158,
+    "stockId": 10,
+    "type": "BB_LOWER",
+    "value": 9320,
+    "signal": "support",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 159,
+    "stockId": 10,
+    "type": "BB_MIDDLE",
+    "value": 9750,
+    "signal": "neutral",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 160,
+    "stockId": 10,
+    "type": "ATR",
+    "value": 224.5,
+    "signal": "high_volatility",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 161,
+    "stockId": 11,
+    "type": "BB_UPPER",
+    "value": 3020,
+    "signal": "resistance",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 162,
+    "stockId": 11,
+    "type": "BB_LOWER",
+    "value": 2620,
+    "signal": "support",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 163,
+    "stockId": 11,
+    "type": "BB_MIDDLE",
+    "value": 2820,
+    "signal": "neutral",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 164,
+    "stockId": 11,
+    "type": "ATR",
+    "value": 89.2,
+    "signal": "low_volatility",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 165,
+    "stockId": 12,
+    "type": "BB_UPPER",
+    "value": 19200,
+    "signal": "resistance",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 166,
+    "stockId": 12,
+    "type": "BB_LOWER",
+    "value": 17200,
+    "signal": "support",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 167,
+    "stockId": 12,
+    "type": "BB_MIDDLE",
+    "value": 18200,
+    "signal": "neutral",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 168,
+    "stockId": 12,
+    "type": "ATR",
+    "value": 456.8,
+    "signal": "high_volatility",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 169,
+    "stockId": 13,
+    "type": "BB_UPPER",
+    "value": 1520,
+    "signal": "resistance",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 170,
+    "stockId": 13,
+    "type": "BB_LOWER",
+    "value": 1360,
+    "signal": "support",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 171,
+    "stockId": 13,
+    "type": "BB_MIDDLE",
+    "value": 1440,
+    "signal": "neutral",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 172,
+    "stockId": 13,
+    "type": "ATR",
+    "value": 42.7,
+    "signal": "low_volatility",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 173,
+    "stockId": 14,
+    "type": "BB_UPPER",
+    "value": 5150,
+    "signal": "resistance",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 174,
+    "stockId": 14,
+    "type": "BB_LOWER",
+    "value": 4550,
+    "signal": "support",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 175,
+    "stockId": 14,
+    "type": "BB_MIDDLE",
+    "value": 4850,
+    "signal": "neutral",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 176,
+    "stockId": 14,
+    "type": "ATR",
+    "value": 134.6,
+    "signal": "medium_volatility",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 177,
+    "stockId": 15,
+    "type": "BB_UPPER",
+    "value": 1420,
+    "signal": "resistance",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 178,
+    "stockId": 15,
+    "type": "BB_LOWER",
+    "value": 1280,
+    "signal": "support",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 179,
+    "stockId": 15,
+    "type": "BB_MIDDLE",
+    "value": 1350,
+    "signal": "neutral",
+    "timestamp": "2024-01-15T09:30:00Z"
+  },
+  {
+    "Id": 180,
+    "stockId": 15,
+    "type": "ATR",
+    "value": 38.9,
+    "signal": "low_volatility",
     "timestamp": "2024-01-15T09:30:00Z"
   }
 ]

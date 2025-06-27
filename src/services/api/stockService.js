@@ -142,10 +142,67 @@ calculateEMA(prices, period) {
     for (let i = period; i < prices.length; i++) {
       ema = (prices[i] * multiplier) + (ema * (1 - multiplier));
     }
-    
 return Math.round(ema * 100) / 100;
   }
 
+  calculateBollingerBands(prices, period = 20, multiplier = 2) {
+    if (prices.length < period) return null;
+    
+    const sma = this.calculateSMA(prices, period);
+    if (!sma) return null;
+    
+    // Calculate standard deviation
+    const recentPrices = prices.slice(-period);
+    const variance = recentPrices.reduce((acc, price) => {
+      return acc + Math.pow(price - sma, 2);
+    }, 0) / period;
+    
+    const standardDeviation = Math.sqrt(variance);
+    
+    const upperBand = sma + (multiplier * standardDeviation);
+    const lowerBand = sma - (multiplier * standardDeviation);
+    const middleBand = sma;
+    
+    return {
+      upper: Math.round(upperBand * 100) / 100,
+      lower: Math.round(lowerBand * 100) / 100,
+      middle: Math.round(middleBand * 100) / 100
+    };
+  }
+
+  calculateATR(highs, lows, closes, period = 14) {
+    if (highs.length < period + 1 || lows.length < period + 1 || closes.length < period + 1) {
+      return null;
+    }
+    
+    const trueRanges = [];
+    
+    // Calculate True Range for each period
+    for (let i = 1; i < highs.length; i++) {
+      const high = highs[i];
+      const low = lows[i];
+      const prevClose = closes[i - 1];
+      
+      const tr1 = high - low;
+      const tr2 = Math.abs(high - prevClose);
+      const tr3 = Math.abs(low - prevClose);
+      
+      const trueRange = Math.max(tr1, tr2, tr3);
+      trueRanges.push(trueRange);
+    }
+    
+    if (trueRanges.length < period) return null;
+    
+    // Calculate initial ATR (simple average of first period)
+    let atr = trueRanges.slice(0, period).reduce((sum, tr) => sum + tr, 0) / period;
+    
+    // Calculate smoothed ATR using Wilder's smoothing method
+    for (let i = period; i < trueRanges.length; i++) {
+      atr = ((atr * (period - 1)) + trueRanges[i]) / period;
+    }
+    
+    return Math.round(atr * 100) / 100;
+  }
   async getHistoricalData(stockId, period = '1M') {
     await delay(300);
     const stock = stockData.find(item => item.Id === parseInt(stockId, 10));

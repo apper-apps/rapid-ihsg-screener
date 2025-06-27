@@ -21,6 +21,10 @@ const indicatorOptions = [
     { value: 'MA_50', label: 'MA (50)' },
     { value: 'EMA_26', label: 'EMA (26)' },
     { value: 'EMA_50', label: 'EMA (50)' },
+    { value: 'BB_UPPER', label: 'Bollinger Upper Band' },
+    { value: 'BB_LOWER', label: 'Bollinger Lower Band' },
+    { value: 'BB_MIDDLE', label: 'Bollinger Middle Band' },
+    { value: 'ATR', label: 'Average True Range' },
     { value: 'PRICE', label: 'Stock Price' }
   ];
 
