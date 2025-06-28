@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "@/App";
 import stockService from "@/services/api/stockService";
 import Header from "@/components/organisms/Header";
 import StockDetailModal from "@/components/organisms/StockDetailModal";
