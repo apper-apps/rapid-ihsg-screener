@@ -41,12 +41,12 @@ class PresetService {
 
       const response = await this.apperClient.fetchRecords('preset', params);
       
-      if (!response.success) {
-        console.error(response.message);
-        toast.error(response.message);
+if (!response || !response.success) {
+        const errorMessage = response?.message || 'Failed to fetch presets';
+        console.error(errorMessage);
+        toast.error(errorMessage);
         return [];
       }
-
       // Map database fields and parse filters JSON
       return (response.data || []).map(preset => ({
         Id: preset.Id,
@@ -74,11 +74,11 @@ class PresetService {
 
       const response = await this.apperClient.getRecordById('preset', parseInt(id), params);
       
-      if (!response.success) {
-        console.error(response.message);
-        throw new Error(response.message);
+if (!response || !response.success) {
+        const errorMessage = response?.message || 'Failed to fetch preset';
+        console.error(errorMessage);
+        throw new Error(errorMessage);
       }
-
       const preset = response.data;
       return {
         Id: preset.Id,
@@ -107,12 +107,12 @@ class PresetService {
 
       const response = await this.apperClient.createRecord('preset', params);
       
-      if (!response.success) {
-        console.error(response.message);
-        toast.error(response.message);
+if (!response || !response.success) {
+        const errorMessage = response?.message || 'Failed to create preset';
+        console.error(errorMessage);
+        toast.error(errorMessage);
         return null;
       }
-
       if (response.results) {
         const failedRecords = response.results.filter(result => !result.success);
         if (failedRecords.length > 0) {
@@ -157,10 +157,10 @@ class PresetService {
       };
 
       const response = await this.apperClient.updateRecord('preset', params);
-      
-      if (!response.success) {
-        console.error(response.message);
-        toast.error(response.message);
+if (!response || !response.success) {
+        const errorMessage = response?.message || 'Failed to update preset';
+        console.error(errorMessage);
+        toast.error(errorMessage);
         return null;
       }
 
@@ -201,12 +201,12 @@ class PresetService {
 
       const response = await this.apperClient.deleteRecord('preset', params);
       
-      if (!response.success) {
-        console.error(response.message);
-        toast.error(response.message);
+if (!response || !response.success) {
+        const errorMessage = response?.message || 'Failed to delete preset';
+        console.error(errorMessage);
+        toast.error(errorMessage);
         return false;
       }
-
       if (response.results) {
         const failedRecords = response.results.filter(result => !result.success);
         if (failedRecords.length > 0) {
