@@ -1,6 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "@/App";
 import stockService from "@/services/api/stockService";
 import Header from "@/components/organisms/Header";
 import StockDetailModal from "@/components/organisms/StockDetailModal";
@@ -8,6 +11,22 @@ import StockTable from "@/components/organisms/StockTable";
 import FilterPanel from "@/components/organisms/FilterPanel";
 
 const Home = () => {
+  const navigate = useNavigate();
+  const { user, isAuthenticated } = useSelector((state) => state.user);
+  const { logout } = useContext(AuthContext);
+  
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/login');
+      return;
+    }
+  }, [isAuthenticated, navigate]);
+
+  // Don't render if not authenticated
+  if (!isAuthenticated) {
+    return null;
+  }
 const [stocks, setStocks] = useState([]);
   const [allStocks, setAllStocks] = useState([]);
   const [filters, setFilters] = useState([]);

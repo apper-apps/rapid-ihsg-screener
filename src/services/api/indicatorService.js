@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify';
 
-class PresetService {
+class IndicatorService {
   constructor() {
     this.apperClient = null;
     this.initializeClient();
@@ -24,22 +24,25 @@ class PresetService {
         fields: [
           { field: { Name: "Name" } },
           { field: { Name: "Tags" } },
-          { field: { Name: "description" } },
-          { field: { Name: "filters" } }
+          { field: { Name: "stock_id" } },
+          { field: { Name: "type" } },
+          { field: { Name: "value" } },
+          { field: { Name: "signal" } },
+          { field: { Name: "timestamp" } }
         ],
         orderBy: [
           {
-            fieldName: "Name",
-            sorttype: "ASC"
+            fieldName: "timestamp",
+            sorttype: "DESC"
           }
         ],
         pagingInfo: {
-          limit: 100,
+          limit: 1000,
           offset: 0
         }
       };
 
-      const response = await this.apperClient.fetchRecords('preset', params);
+      const response = await this.apperClient.fetchRecords('indicator', params);
       
       if (!response.success) {
         console.error(response.message);
@@ -47,16 +50,10 @@ class PresetService {
         return [];
       }
 
-      // Map database fields and parse filters JSON
-      return (response.data || []).map(preset => ({
-        Id: preset.Id,
-        name: preset.Name,
-        description: preset.description,
-        filters: this.parseFilters(preset.filters)
-      }));
+      return response.data || [];
     } catch (error) {
-      console.error('Error fetching presets:', error);
-      toast.error('Failed to load presets');
+      console.error('Error fetching indicators:', error);
+      toast.error('Failed to load indicators');
       return [];
     }
   }
@@ -67,45 +64,86 @@ class PresetService {
         fields: [
           { field: { Name: "Name" } },
           { field: { Name: "Tags" } },
-          { field: { Name: "description" } },
-          { field: { Name: "filters" } }
+          { field: { Name: "stock_id" } },
+          { field: { Name: "type" } },
+          { field: { Name: "value" } },
+          { field: { Name: "signal" } },
+          { field: { Name: "timestamp" } }
         ]
       };
 
-      const response = await this.apperClient.getRecordById('preset', parseInt(id), params);
+      const response = await this.apperClient.getRecordById('indicator', parseInt(id), params);
       
       if (!response.success) {
         console.error(response.message);
         throw new Error(response.message);
       }
 
-      const preset = response.data;
-      return {
-        Id: preset.Id,
-        name: preset.Name,
-        description: preset.description,
-        filters: this.parseFilters(preset.filters)
-      };
+      return response.data;
     } catch (error) {
-      console.error(`Error fetching preset with ID ${id}:`, error);
+      console.error(`Error fetching indicator with ID ${id}:`, error);
       throw error;
     }
   }
 
-  async create(presetData) {
+  async getByStockId(stockId) {
     try {
       const params = {
-        records: [
+        fields: [
+          { field: { Name: "Name" } },
+          { field: { Name: "Tags" } },
+          { field: { Name: "stock_id" } },
+          { field: { Name: "type" } },
+          { field: { Name: "value" } },
+          { field: { Name: "signal" } },
+          { field: { Name: "timestamp" } }
+        ],
+        where: [
           {
-            Name: presetData.name,
-            Tags: presetData.Tags || '',
-            description: presetData.description || '',
-            filters: this.stringifyFilters(presetData.filters)
+            FieldName: "stock_id",
+            Operator: "EqualTo",
+            Values: [parseInt(stockId)]
+          }
+        ],
+        orderBy: [
+          {
+            fieldName: "timestamp",
+            sorttype: "DESC"
           }
         ]
       };
 
-      const response = await this.apperClient.createRecord('preset', params);
+      const response = await this.apperClient.fetchRecords('indicator', params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        return [];
+      }
+
+      return response.data || [];
+    } catch (error) {
+      console.error('Error fetching indicators by stock ID:', error);
+      return [];
+    }
+  }
+
+  async create(indicatorData) {
+    try {
+      const params = {
+        records: [
+          {
+            Name: indicatorData.Name,
+            Tags: indicatorData.Tags,
+            stock_id: parseInt(indicatorData.stock_id),
+            type: indicatorData.type,
+            value: parseFloat(indicatorData.value),
+            signal: indicatorData.signal,
+            timestamp: indicatorData.timestamp || new Date().toISOString()
+          }
+        ]
+      };
+
+      const response = await this.apperClient.createRecord('indicator', params);
       
       if (!response.success) {
         console.error(response.message);
@@ -123,21 +161,13 @@ class PresetService {
         }
         
         const successfulRecords = response.results.filter(result => result.success);
-        if (successfulRecords.length > 0) {
-          const preset = successfulRecords[0].data;
-          return {
-            Id: preset.Id,
-            name: preset.Name,
-            description: preset.description,
-            filters: this.parseFilters(preset.filters)
-          };
-        }
+        return successfulRecords.length > 0 ? successfulRecords[0].data : null;
       }
 
       return null;
     } catch (error) {
-      console.error('Error creating preset:', error);
-      toast.error('Failed to create preset');
+      console.error('Error creating indicator:', error);
+      toast.error('Failed to create indicator');
       return null;
     }
   }
@@ -148,15 +178,18 @@ class PresetService {
         records: [
           {
             Id: parseInt(id),
-            Name: updateData.name,
-            Tags: updateData.Tags || '',
-            description: updateData.description || '',
-            filters: this.stringifyFilters(updateData.filters)
+            Name: updateData.Name,
+            Tags: updateData.Tags,
+            stock_id: parseInt(updateData.stock_id),
+            type: updateData.type,
+            value: parseFloat(updateData.value),
+            signal: updateData.signal,
+            timestamp: updateData.timestamp
           }
         ]
       };
 
-      const response = await this.apperClient.updateRecord('preset', params);
+      const response = await this.apperClient.updateRecord('indicator', params);
       
       if (!response.success) {
         console.error(response.message);
@@ -174,21 +207,13 @@ class PresetService {
         }
 
         const successfulRecords = response.results.filter(result => result.success);
-        if (successfulRecords.length > 0) {
-          const preset = successfulRecords[0].data;
-          return {
-            Id: preset.Id,
-            name: preset.Name,
-            description: preset.description,
-            filters: this.parseFilters(preset.filters)
-          };
-        }
+        return successfulRecords.length > 0 ? successfulRecords[0].data : null;
       }
 
       return null;
     } catch (error) {
-      console.error('Error updating preset:', error);
-      toast.error('Failed to update preset');
+      console.error('Error updating indicator:', error);
+      toast.error('Failed to update indicator');
       return null;
     }
   }
@@ -199,7 +224,7 @@ class PresetService {
         RecordIds: [parseInt(id)]
       };
 
-      const response = await this.apperClient.deleteRecord('preset', params);
+      const response = await this.apperClient.deleteRecord('indicator', params);
       
       if (!response.success) {
         console.error(response.message);
@@ -222,31 +247,11 @@ class PresetService {
 
       return false;
     } catch (error) {
-      console.error('Error deleting preset:', error);
-      toast.error('Failed to delete preset');
+      console.error('Error deleting indicator:', error);
+      toast.error('Failed to delete indicator');
       return false;
-    }
-  }
-
-  // Helper methods for filter serialization
-  parseFilters(filtersString) {
-    try {
-      if (!filtersString) return [];
-      return JSON.parse(filtersString);
-    } catch (error) {
-      console.error('Error parsing filters:', error);
-      return [];
-    }
-  }
-
-  stringifyFilters(filters) {
-    try {
-      return JSON.stringify(filters || []);
-    } catch (error) {
-      console.error('Error stringifying filters:', error);
-      return '[]';
     }
   }
 }
 
-export default new PresetService();
+export default new IndicatorService();
