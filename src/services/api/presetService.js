@@ -2,14 +2,14 @@ import { toast } from 'react-toastify';
 
 class PresetService {
   constructor() {
-    this.apperClient = null;
+    this.client = null;
     this.initializeClient();
   }
 
   initializeClient() {
     try {
       const { ApperClient } = window.ApperSDK;
-      this.apperClient = new ApperClient({
+      this.client = new ApperClient({
         apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
         apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
       });
@@ -20,39 +20,49 @@ class PresetService {
 
   async getAll() {
     try {
+      if (!this.client) {
+        throw new Error('ApperClient not initialized');
+      }
+
       const params = {
         fields: [
           { field: { Name: "Name" } },
-          { field: { Name: "Tags" } },
           { field: { Name: "description" } },
-          { field: { Name: "filters" } }
+          { field: { Name: "filters" } },
+          { field: { Name: "Tags" } },
+          { field: { Name: "Owner" } },
+          { field: { Name: "CreatedOn" } },
+          { field: { Name: "ModifiedOn" } }
         ],
         orderBy: [
           {
-            fieldName: "Name",
-            sorttype: "ASC"
+            fieldName: "ModifiedOn",
+            sorttype: "DESC"
           }
-        ],
-        pagingInfo: {
-          limit: 100,
-          offset: 0
-        }
+        ]
       };
 
-      const response = await this.apperClient.fetchRecords('preset', params);
-      
-if (!response || !response.success) {
-        const errorMessage = response?.message || 'Failed to fetch presets';
-        console.error(errorMessage);
-        toast.error(errorMessage);
+      const response = await this.client.fetchRecords('preset', params);
+
+      if (!response.success) {
+        console.error('API Error:', response.message);
+        toast.error(response.message);
         return [];
       }
-      // Map database fields and parse filters JSON
-      return (response.data || []).map(preset => ({
+
+      if (!response.data || response.data.length === 0) {
+        return [];
+      }
+
+      return response.data.map(preset => ({
         Id: preset.Id,
         name: preset.Name,
-        description: preset.description,
-        filters: this.parseFilters(preset.filters)
+        description: preset.description || '',
+        filters: this.parseFilters(preset.filters),
+        tags: preset.Tags || '',
+        owner: preset.Owner,
+        createdOn: preset.CreatedOn,
+        modifiedOn: preset.ModifiedOn
       }));
     } catch (error) {
       console.error('Error fetching presets:', error);
@@ -63,28 +73,38 @@ if (!response || !response.success) {
 
   async getById(id) {
     try {
+      if (!this.client) {
+        throw new Error('ApperClient not initialized');
+      }
+
       const params = {
         fields: [
           { field: { Name: "Name" } },
-          { field: { Name: "Tags" } },
           { field: { Name: "description" } },
-          { field: { Name: "filters" } }
+          { field: { Name: "filters" } },
+          { field: { Name: "Tags" } },
+          { field: { Name: "Owner" } }
         ]
       };
 
-      const response = await this.apperClient.getRecordById('preset', parseInt(id), params);
-      
-if (!response || !response.success) {
-        const errorMessage = response?.message || 'Failed to fetch preset';
-        console.error(errorMessage);
-        throw new Error(errorMessage);
+      const response = await this.client.getRecordById('preset', parseInt(id), params);
+
+      if (!response.success) {
+        console.error('API Error:', response.message);
+        throw new Error(response.message);
       }
-      const preset = response.data;
+
+      if (!response.data) {
+        throw new Error('Preset not found');
+      }
+
       return {
-        Id: preset.Id,
-        name: preset.Name,
-        description: preset.description,
-        filters: this.parseFilters(preset.filters)
+        Id: response.data.Id,
+        name: response.data.Name,
+        description: response.data.description || '',
+        filters: this.parseFilters(response.data.filters),
+        tags: response.data.Tags || '',
+        owner: response.data.Owner
       };
     } catch (error) {
       console.error(`Error fetching preset with ID ${id}:`, error);
@@ -94,43 +114,44 @@ if (!response || !response.success) {
 
   async create(presetData) {
     try {
+      if (!this.client) {
+        throw new Error('ApperClient not initialized');
+      }
+
       const params = {
-        records: [
-          {
-            Name: presetData.name,
-            Tags: presetData.Tags || '',
-            description: presetData.description || '',
-            filters: this.stringifyFilters(presetData.filters)
-          }
-        ]
+        records: [{
+          Name: presetData.name,
+          description: presetData.description || '',
+          filters: this.stringifyFilters(presetData.filters),
+          Tags: presetData.tags || ''
+        }]
       };
 
-      const response = await this.apperClient.createRecord('preset', params);
-      
-if (!response || !response.success) {
-        const errorMessage = response?.message || 'Failed to create preset';
-        console.error(errorMessage);
-        toast.error(errorMessage);
+      const response = await this.client.createRecord('preset', params);
+
+      if (!response.success) {
+        console.error('API Error:', response.message);
+        toast.error(response.message);
         return null;
       }
+
       if (response.results) {
+        const successfulRecords = response.results.filter(result => result.success);
         const failedRecords = response.results.filter(result => !result.success);
+
         if (failedRecords.length > 0) {
           console.error(`Failed to create ${failedRecords.length} records:${JSON.stringify(failedRecords)}`);
+          
           failedRecords.forEach(record => {
+            record.errors?.forEach(error => {
+              toast.error(`${error.fieldLabel}: ${error.message}`);
+            });
             if (record.message) toast.error(record.message);
           });
         }
-        
-        const successfulRecords = response.results.filter(result => result.success);
+
         if (successfulRecords.length > 0) {
-          const preset = successfulRecords[0].data;
-          return {
-            Id: preset.Id,
-            name: preset.Name,
-            description: preset.description,
-            filters: this.parseFilters(preset.filters)
-          };
+          return successfulRecords[0].data;
         }
       }
 
@@ -144,44 +165,45 @@ if (!response || !response.success) {
 
   async update(id, updateData) {
     try {
+      if (!this.client) {
+        throw new Error('ApperClient not initialized');
+      }
+
       const params = {
-        records: [
-          {
-            Id: parseInt(id),
-            Name: updateData.name,
-            Tags: updateData.Tags || '',
-            description: updateData.description || '',
-            filters: this.stringifyFilters(updateData.filters)
-          }
-        ]
+        records: [{
+          Id: parseInt(id),
+          Name: updateData.name,
+          description: updateData.description || '',
+          filters: this.stringifyFilters(updateData.filters),
+          Tags: updateData.tags || ''
+        }]
       };
 
-      const response = await this.apperClient.updateRecord('preset', params);
-if (!response || !response.success) {
-        const errorMessage = response?.message || 'Failed to update preset';
-        console.error(errorMessage);
-        toast.error(errorMessage);
+      const response = await this.client.updateRecord('preset', params);
+
+      if (!response.success) {
+        console.error('API Error:', response.message);
+        toast.error(response.message);
         return null;
       }
 
       if (response.results) {
-        const failedRecords = response.results.filter(result => !result.success);
-        if (failedRecords.length > 0) {
-          console.error(`Failed to update ${failedRecords.length} records:${JSON.stringify(failedRecords)}`);
-          failedRecords.forEach(record => {
+        const successfulUpdates = response.results.filter(result => result.success);
+        const failedUpdates = response.results.filter(result => !result.success);
+
+        if (failedUpdates.length > 0) {
+          console.error(`Failed to update ${failedUpdates.length} records:${JSON.stringify(failedUpdates)}`);
+          
+          failedUpdates.forEach(record => {
+            record.errors?.forEach(error => {
+              toast.error(`${error.fieldLabel}: ${error.message}`);
+            });
             if (record.message) toast.error(record.message);
           });
         }
 
-        const successfulRecords = response.results.filter(result => result.success);
-        if (successfulRecords.length > 0) {
-          const preset = successfulRecords[0].data;
-          return {
-            Id: preset.Id,
-            name: preset.Name,
-            description: preset.description,
-            filters: this.parseFilters(preset.filters)
-          };
+        if (successfulUpdates.length > 0) {
+          return successfulUpdates[0].data;
         }
       }
 
@@ -195,29 +217,35 @@ if (!response || !response.success) {
 
   async delete(id) {
     try {
+      if (!this.client) {
+        throw new Error('ApperClient not initialized');
+      }
+
       const params = {
         RecordIds: [parseInt(id)]
       };
 
-      const response = await this.apperClient.deleteRecord('preset', params);
-      
-if (!response || !response.success) {
-        const errorMessage = response?.message || 'Failed to delete preset';
-        console.error(errorMessage);
-        toast.error(errorMessage);
+      const response = await this.client.deleteRecord('preset', params);
+
+      if (!response.success) {
+        console.error('API Error:', response.message);
+        toast.error(response.message);
         return false;
       }
+
       if (response.results) {
-        const failedRecords = response.results.filter(result => !result.success);
-        if (failedRecords.length > 0) {
-          console.error(`Failed to delete ${failedRecords.length} records:${JSON.stringify(failedRecords)}`);
-          failedRecords.forEach(record => {
+        const successfulDeletions = response.results.filter(result => result.success);
+        const failedDeletions = response.results.filter(result => !result.success);
+
+        if (failedDeletions.length > 0) {
+          console.error(`Failed to delete ${failedDeletions.length} records:${JSON.stringify(failedDeletions)}`);
+          
+          failedDeletions.forEach(record => {
             if (record.message) toast.error(record.message);
           });
         }
 
-        const successfulRecords = response.results.filter(result => result.success);
-        return successfulRecords.length > 0;
+        return successfulDeletions.length > 0;
       }
 
       return false;
@@ -228,10 +256,12 @@ if (!response || !response.success) {
     }
   }
 
-  // Helper methods for filter serialization
   parseFilters(filtersString) {
+    if (!filtersString || typeof filtersString !== 'string') {
+      return [];
+    }
+
     try {
-      if (!filtersString) return [];
       return JSON.parse(filtersString);
     } catch (error) {
       console.error('Error parsing filters:', error);
@@ -240,8 +270,12 @@ if (!response || !response.success) {
   }
 
   stringifyFilters(filters) {
+    if (!Array.isArray(filters)) {
+      return '[]';
+    }
+
     try {
-      return JSON.stringify(filters || []);
+      return JSON.stringify(filters);
     } catch (error) {
       console.error('Error stringifying filters:', error);
       return '[]';
@@ -249,4 +283,5 @@ if (!response || !response.success) {
   }
 }
 
-export default new PresetService();
+const presetService = new PresetService();
+export default presetService;
