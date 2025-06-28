@@ -11,23 +11,11 @@ import StockTable from "@/components/organisms/StockTable";
 import FilterPanel from "@/components/organisms/FilterPanel";
 
 const Home = () => {
-  const navigate = useNavigate();
+const navigate = useNavigate();
   const { user, isAuthenticated } = useSelector((state) => state.user);
   const { logout } = useContext(AuthContext);
   
-  // Redirect to login if not authenticated
-  useEffect(() => {
-    if (!isAuthenticated) {
-      navigate('/login');
-      return;
-    }
-  }, [isAuthenticated, navigate]);
-
-  // Don't render if not authenticated
-  if (!isAuthenticated) {
-    return null;
-  }
-const [stocks, setStocks] = useState([]);
+  const [stocks, setStocks] = useState([]);
   const [allStocks, setAllStocks] = useState([]);
   const [filters, setFilters] = useState([]);
   const [loading, setLoading] = useState(false);
