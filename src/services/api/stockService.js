@@ -1,4 +1,5 @@
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
+import React from "react";
 
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -15,7 +16,7 @@ class StockService {
         apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
         apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
       });
-    } catch (error) {
+} catch (error) {
       console.error('Failed to initialize ApperClient:', error);
     }
   }
@@ -25,18 +26,21 @@ class StockService {
       const params = {
         fields: [
           { field: { Name: "Name" } },
-          { field: { Name: "Tags" } },
           { field: { Name: "symbol" } },
           { field: { Name: "price" } },
           { field: { Name: "change" } },
           { field: { Name: "change_percent" } },
           { field: { Name: "volume" } },
           { field: { Name: "market_cap" } },
-          { field: { Name: "sector" } }
+          { field: { Name: "sector" } },
+          { field: { Name: "Tags" } },
+          { field: { Name: "Owner" } },
+          { field: { Name: "CreatedOn" } },
+          { field: { Name: "ModifiedOn" } }
         ],
         orderBy: [
           {
-            fieldName: "symbol",
+            fieldName: "Name",
             sorttype: "ASC"
           }
         ],
@@ -48,9 +52,10 @@ class StockService {
 
       const response = await this.apperClient.fetchRecords('stock', params);
       
-      if (!response.success) {
-        console.error(response.message);
-        toast.error(response.message);
+      if (!response || !response.success) {
+        const errorMsg = response?.message || 'Failed to fetch stocks';
+        console.error(errorMsg);
+        toast.error(errorMsg);
         return [];
       }
 
@@ -80,9 +85,10 @@ class StockService {
 
       const response = await this.apperClient.getRecordById('stock', parseInt(id), params);
       
-      if (!response.success) {
-        console.error(response.message);
-        throw new Error(response.message);
+if (!response || !response.success) {
+        const errorMsg = response?.message || `Failed to fetch stock with ID ${id}`;
+        console.error(errorMsg);
+        throw new Error(errorMsg);
       }
 
       return response.data;
@@ -114,8 +120,9 @@ class StockService {
 
       const response = await this.apperClient.fetchRecords('indicator', params);
       
-      if (!response.success) {
-        console.error(response.message);
+if (!response || !response.success) {
+        const errorMsg = response?.message || `Failed to fetch indicators for stock ${stockId}`;
+        console.error(errorMsg);
         return [];
       }
 
@@ -327,18 +334,19 @@ class StockService {
 
       const response = await this.apperClient.createRecord('stock', params);
       
-      if (!response.success) {
-        console.error(response.message);
-        toast.error(response.message);
+if (!response || !response.success) {
+        const errorMsg = response?.message || 'Failed to create stock';
+        console.error(errorMsg);
+        toast.error(errorMsg);
         return null;
       }
 
       if (response.results) {
-        const failedRecords = response.results.filter(result => !result.success);
+const failedRecords = response.results?.filter(result => !result.success) || [];
         if (failedRecords.length > 0) {
           console.error(`Failed to create ${failedRecords.length} records:${JSON.stringify(failedRecords)}`);
           failedRecords.forEach(record => {
-            if (record.message) toast.error(record.message);
+            if (record?.message) toast.error(record.message);
           });
         }
         
@@ -375,18 +383,19 @@ class StockService {
 
       const response = await this.apperClient.updateRecord('stock', params);
       
-      if (!response.success) {
-        console.error(response.message);
-        toast.error(response.message);
+if (!response || !response.success) {
+        const errorMsg = response?.message || 'Failed to update stock';
+        console.error(errorMsg);
+        toast.error(errorMsg);
         return null;
       }
 
       if (response.results) {
-        const failedRecords = response.results.filter(result => !result.success);
+const failedRecords = response.results?.filter(result => !result.success) || [];
         if (failedRecords.length > 0) {
           console.error(`Failed to update ${failedRecords.length} records:${JSON.stringify(failedRecords)}`);
           failedRecords.forEach(record => {
-            if (record.message) toast.error(record.message);
+            if (record?.message) toast.error(record.message);
           });
         }
 
@@ -411,17 +420,17 @@ class StockService {
       const response = await this.apperClient.deleteRecord('stock', params);
       
       if (!response.success) {
-        console.error(response.message);
-        toast.error(response.message);
+const errorMsg = response?.message || 'Failed to delete stock';
+        console.error(errorMsg);
+        toast.error(errorMsg);
         return false;
       }
-
-      if (response.results) {
-        const failedRecords = response.results.filter(result => !result.success);
+if (response.results) {
+        const failedRecords = response.results?.filter(result => !result.success) || [];
         if (failedRecords.length > 0) {
           console.error(`Failed to delete ${failedRecords.length} records:${JSON.stringify(failedRecords)}`);
           failedRecords.forEach(record => {
-            if (record.message) toast.error(record.message);
+            if (record?.message) toast.error(record.message);
           });
         }
 
