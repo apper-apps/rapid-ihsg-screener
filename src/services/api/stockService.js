@@ -1,6 +1,7 @@
 import { toast } from "react-toastify";
 import React from "react";
 
+// Utility function for delays
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 // Yahoo Finance API integration using fetch
@@ -35,7 +36,7 @@ class StockService {
     this.initializeClient();
   }
 
-initializeClient() {
+  initializeClient() {
     try {
       // Check if ApperSDK is available
       if (typeof window === 'undefined' || !window.ApperSDK) {
