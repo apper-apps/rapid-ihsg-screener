@@ -11,10 +11,6 @@ import StockTable from "@/components/organisms/StockTable";
 import FilterPanel from "@/components/organisms/FilterPanel";
 
 const Home = () => {
-const navigate = useNavigate();
-  const { user, isAuthenticated } = useSelector((state) => state.user);
-  const { logout } = useContext(AuthContext);
-  
   const [stocks, setStocks] = useState([]);
   const [allStocks, setAllStocks] = useState([]);
   const [filters, setFilters] = useState([]);

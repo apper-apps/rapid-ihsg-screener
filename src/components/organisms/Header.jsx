@@ -1,18 +1,9 @@
 import { motion } from "framer-motion";
-import React, { useContext } from "react";
-import { useSelector } from "react-redux";
+import React from "react";
 import ApperIcon from "@/components/ApperIcon";
 import Button from "@/components/atoms/Button";
-import { AuthContext } from "@/App";
 
 function Header({ onExport, resultsCount, totalCount, loading }) {
-  const { user } = useSelector((state) => state.user);
-  const { logout } = useContext(AuthContext);
-  
-  const handleLogout = () => {
-    logout();
-  };
-
   const ihsgValue = 7245.73;
   const ihsgChange = 0.45;
   const ihsgChangePercent = 0.62;
@@ -71,16 +62,7 @@ function Header({ onExport, resultsCount, totalCount, loading }) {
             )}
           </div>
 
-          <div className="flex items-center space-x-2">
-            {user && (
-              <div className="hidden md:flex items-center space-x-2 px-3 py-1.5 bg-surface-50 rounded-lg">
-                <ApperIcon name="User" size={16} className="text-surface-600" />
-                <span className="text-sm text-surface-700">
-                  {user.firstName || user.name || 'User'}
-                </span>
-              </div>
-            )}
-            
+<div className="flex items-center space-x-2">
             <Button
               variant="secondary"
               size="sm"
@@ -89,16 +71,6 @@ function Header({ onExport, resultsCount, totalCount, loading }) {
               disabled={!resultsCount || resultsCount === 0}
             >
               Export CSV
-            </Button>
-
-            <Button
-              variant="ghost"
-              size="sm"
-              icon="LogOut"
-              onClick={handleLogout}
-              title="Logout"
-            >
-              Logout
             </Button>
           </div>
         </div>
