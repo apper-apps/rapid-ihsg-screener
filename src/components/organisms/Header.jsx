@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 import { useSelector } from "react-redux";
 import ApperIcon from "@/components/ApperIcon";
 import Button from "@/components/atoms/Button";
-import { AuthContext } from "@/contexts/AuthContext";
+import { AuthContext } from "@/App";
 
 function Header({ onExport, resultsCount, totalCount, loading }) {
   const { user } = useSelector((state) => state.user);
