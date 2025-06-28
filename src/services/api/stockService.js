@@ -35,20 +35,33 @@ class StockService {
     this.initializeClient();
   }
 
-  initializeClient() {
+initializeClient() {
     try {
+      // Check if ApperSDK is available
+      if (typeof window === 'undefined' || !window.ApperSDK) {
+        console.warn('ApperSDK not available, running in offline mode');
+        return;
+      }
+
       const { ApperClient } = window.ApperSDK;
       this.apperClient = new ApperClient({
         apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
         apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
       });
-} catch (error) {
+    } catch (error) {
       console.error('Failed to initialize ApperClient:', error);
+      this.apperClient = null;
     }
   }
 
-  async getAll() {
+async getAll() {
     try {
+      // Return empty array if ApperClient is not available
+      if (!this.apperClient) {
+        console.warn('ApperClient not available, returning empty stocks array');
+        return [];
+      }
+
       const params = {
         fields: [
           { field: { Name: "Name" } },
@@ -93,8 +106,12 @@ class StockService {
     }
   }
 
-  async getById(id) {
+async getById(id) {
     try {
+      if (!this.apperClient) {
+        throw new Error('ApperClient not available');
+      }
+
       const params = {
         fields: [
           { field: { Name: "Name" } },
@@ -111,7 +128,7 @@ class StockService {
 
       const response = await this.apperClient.getRecordById('stock', parseInt(id), params);
       
-if (!response || !response.success) {
+      if (!response || !response.success) {
         const errorMsg = response?.message || `Failed to fetch stock with ID ${id}`;
         console.error(errorMsg);
         throw new Error(errorMsg);
@@ -124,8 +141,13 @@ if (!response || !response.success) {
     }
   }
 
-  async getIndicators(stockId) {
+async getIndicators(stockId) {
     try {
+      if (!this.apperClient) {
+        console.warn('ApperClient not available, returning empty indicators array');
+        return [];
+      }
+
       const params = {
         fields: [
           { field: { Name: "Name" } },
@@ -146,7 +168,7 @@ if (!response || !response.success) {
 
       const response = await this.apperClient.fetchRecords('indicator', params);
       
-if (!response || !response.success) {
+      if (!response || !response.success) {
         const errorMsg = response?.message || `Failed to fetch indicators for stock ${stockId}`;
         console.error(errorMsg);
         return [];
@@ -160,69 +182,87 @@ if (!response || !response.success) {
   }
 
 async fetchYahooFinanceData(symbol) {
-    if (!yahooFinance) return null;
+    if (!yahooFinance || !symbol) return null;
     
     try {
       const quote = await yahooFinance.quote(symbol);
       if (!quote) return null;
       
       return {
-        price: quote.regularMarketPrice || quote.previousClose,
+        price: quote.regularMarketPrice || quote.previousClose || null,
         change: quote.regularMarketChange || 0,
         changePercent: quote.regularMarketChangePercent || 0,
         volume: quote.regularMarketVolume || 0,
         marketCap: quote.marketCap || 0
       };
     } catch (error) {
-      console.warn(`Failed to fetch Yahoo Finance data for ${symbol}:`, error);
+      // Handle CORS errors and other API failures gracefully
+      if (error.message.includes('CORS') || error.message.includes('fetch')) {
+        console.warn(`CORS error fetching Yahoo Finance data for ${symbol}, using database fallback`);
+      } else {
+        console.warn(`Failed to fetch Yahoo Finance data for ${symbol}:`, error);
+      }
       return null;
     }
   }
 
-  async getAllWithIndicators() {
+async getAllWithIndicators() {
     try {
       const stocks = await this.getAll();
       
-      // Get all indicators
-      const indicatorParams = {
-        fields: [
-          { field: { Name: "Name" } },
-          { field: { Name: "type" } },
-          { field: { Name: "value" } },
-          { field: { Name: "signal" } },
-          { field: { Name: "timestamp" } },
-          { field: { Name: "stock_id" } }
-        ],
-        pagingInfo: {
-          limit: 1000,
-          offset: 0
-        }
-      };
+      // Get all indicators if ApperClient is available
+      let indicators = [];
+      if (this.apperClient) {
+        try {
+          const indicatorParams = {
+            fields: [
+              { field: { Name: "Name" } },
+              { field: { Name: "type" } },
+              { field: { Name: "value" } },
+              { field: { Name: "signal" } },
+              { field: { Name: "timestamp" } },
+              { field: { Name: "stock_id" } }
+            ],
+            pagingInfo: {
+              limit: 1000,
+              offset: 0
+            }
+          };
 
-      const indicatorResponse = await this.apperClient.fetchRecords('indicator', indicatorParams);
-      const indicators = indicatorResponse.success ? indicatorResponse.data || [] : [];
+          const indicatorResponse = await this.apperClient.fetchRecords('indicator', indicatorParams);
+          indicators = indicatorResponse?.success ? indicatorResponse.data || [] : [];
+        } catch (indicatorError) {
+          console.warn('Failed to fetch indicators:', indicatorError);
+          indicators = [];
+        }
+      }
 
       // Enhance stocks with Yahoo Finance data
       const enhancedStocks = await Promise.all(stocks.map(async (stock) => {
         const stockIndicators = indicators.filter(ind => ind.stock_id === stock.Id);
         
-        // Try to get real-time data from Yahoo Finance
+        // Try to get real-time data from Yahoo Finance (with CORS fallback)
         let yahooData = null;
-        if (stock.symbol) {
-          yahooData = await this.fetchYahooFinanceData(stock.symbol);
+        if (stock.symbol && typeof stock.symbol === 'string') {
+          try {
+            yahooData = await this.fetchYahooFinanceData(stock.symbol);
+          } catch (yahooError) {
+            console.warn(`Yahoo Finance error for ${stock.symbol}:`, yahooError);
+            yahooData = null;
+          }
         }
         
         return {
           ...stock,
           // Use Yahoo Finance data if available, otherwise fallback to database values
-          symbol: stock.symbol,
-          name: stock.Name,
-          price: yahooData?.price || stock.price,
-          change: yahooData?.change || stock.change,
-          changePercent: yahooData?.changePercent || stock.change_percent,
-          volume: yahooData?.volume || stock.volume,
-          marketCap: yahooData?.marketCap || stock.market_cap,
-          sector: stock.sector,
+          symbol: stock.symbol || '',
+          name: stock.Name || stock.name || '',
+          price: yahooData?.price !== null ? yahooData.price : (stock.price || 0),
+          change: yahooData?.change !== null ? yahooData.change : (stock.change || 0),
+          changePercent: yahooData?.changePercent !== null ? yahooData.changePercent : (stock.change_percent || 0),
+          volume: yahooData?.volume !== null ? yahooData.volume : (stock.volume || 0),
+          marketCap: yahooData?.marketCap !== null ? yahooData.marketCap : (stock.market_cap || 0),
+          sector: stock.sector || '',
           indicators: stockIndicators.map(ind => ({
             Id: ind.Id,
             type: ind.type,
