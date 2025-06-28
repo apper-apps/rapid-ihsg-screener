@@ -3,32 +3,31 @@ import React from "react";
 
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-// Yahoo Finance integration
-let yahooFinance = null;
-try {
-  // Dynamic import for Yahoo Finance (works in browser environment)
-  if (typeof window !== 'undefined') {
-    // For browser environment, we'll use a fetch-based approach
-    yahooFinance = {
-      quote: async (symbol) => {
-        // Yahoo Finance API alternative for browser
-        const response = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${symbol}`);
-        if (!response.ok) throw new Error('Yahoo Finance API error');
-        const data = await response.json();
-        return data.chart?.result?.[0]?.meta || null;
-      },
-      historical: async (symbol, { period1, period2, interval = '1d' }) => {
-        const response = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?period1=${period1}&period2=${period2}&interval=${interval}`);
-        if (!response.ok) throw new Error('Yahoo Finance API error');
-        const data = await response.json();
-        return data.chart?.result?.[0] || null;
-      }
-    };
+// Yahoo Finance API integration using fetch
+const yahooFinance = {
+  quote: async (symbol) => {
+    try {
+      const response = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${symbol}`);
+      if (!response.ok) throw new Error('Yahoo Finance API error');
+      const data = await response.json();
+      return data.chart?.result?.[0]?.meta || null;
+    } catch (error) {
+      console.warn(`Yahoo Finance quote failed for ${symbol}:`, error);
+      return null;
+    }
+  },
+  historical: async (symbol, { period1, period2, interval = '1d' }) => {
+    try {
+      const response = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?period1=${period1}&period2=${period2}&interval=${interval}`);
+      if (!response.ok) throw new Error('Yahoo Finance API error');
+      const data = await response.json();
+      return data.chart?.result?.[0] || null;
+    } catch (error) {
+      console.warn(`Yahoo Finance historical data failed for ${symbol}:`, error);
+      return null;
+    }
   }
-} catch (error) {
-  console.warn('Yahoo Finance not available, using fallback data:', error);
-  yahooFinance = null;
-}
+};
 
 class StockService {
   constructor() {
