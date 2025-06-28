@@ -3,6 +3,33 @@ import React from "react";
 
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
+// Yahoo Finance integration
+let yahooFinance = null;
+try {
+  // Dynamic import for Yahoo Finance (works in browser environment)
+  if (typeof window !== 'undefined') {
+    // For browser environment, we'll use a fetch-based approach
+    yahooFinance = {
+      quote: async (symbol) => {
+        // Yahoo Finance API alternative for browser
+        const response = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${symbol}`);
+        if (!response.ok) throw new Error('Yahoo Finance API error');
+        const data = await response.json();
+        return data.chart?.result?.[0]?.meta || null;
+      },
+      historical: async (symbol, { period1, period2, interval = '1d' }) => {
+        const response = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?period1=${period1}&period2=${period2}&interval=${interval}`);
+        if (!response.ok) throw new Error('Yahoo Finance API error');
+        const data = await response.json();
+        return data.chart?.result?.[0] || null;
+      }
+    };
+  }
+} catch (error) {
+  console.warn('Yahoo Finance not available, using fallback data:', error);
+  yahooFinance = null;
+}
+
 class StockService {
   constructor() {
     this.apperClient = null;
@@ -133,6 +160,26 @@ if (!response || !response.success) {
     }
   }
 
+async fetchYahooFinanceData(symbol) {
+    if (!yahooFinance) return null;
+    
+    try {
+      const quote = await yahooFinance.quote(symbol);
+      if (!quote) return null;
+      
+      return {
+        price: quote.regularMarketPrice || quote.previousClose,
+        change: quote.regularMarketChange || 0,
+        changePercent: quote.regularMarketChangePercent || 0,
+        volume: quote.regularMarketVolume || 0,
+        marketCap: quote.marketCap || 0
+      };
+    } catch (error) {
+      console.warn(`Failed to fetch Yahoo Finance data for ${symbol}:`, error);
+      return null;
+    }
+  }
+
   async getAllWithIndicators() {
     try {
       const stocks = await this.getAll();
@@ -156,19 +203,26 @@ if (!response || !response.success) {
       const indicatorResponse = await this.apperClient.fetchRecords('indicator', indicatorParams);
       const indicators = indicatorResponse.success ? indicatorResponse.data || [] : [];
 
-      // Match indicators to stocks
-      return stocks.map(stock => {
+      // Enhance stocks with Yahoo Finance data
+      const enhancedStocks = await Promise.all(stocks.map(async (stock) => {
         const stockIndicators = indicators.filter(ind => ind.stock_id === stock.Id);
+        
+        // Try to get real-time data from Yahoo Finance
+        let yahooData = null;
+        if (stock.symbol) {
+          yahooData = await this.fetchYahooFinanceData(stock.symbol);
+        }
+        
         return {
           ...stock,
-          // Map database fields to UI expected fields
+          // Use Yahoo Finance data if available, otherwise fallback to database values
           symbol: stock.symbol,
           name: stock.Name,
-          price: stock.price,
-          change: stock.change,
-          changePercent: stock.change_percent,
-          volume: stock.volume,
-          marketCap: stock.market_cap,
+          price: yahooData?.price || stock.price,
+          change: yahooData?.change || stock.change,
+          changePercent: yahooData?.changePercent || stock.change_percent,
+          volume: yahooData?.volume || stock.volume,
+          marketCap: yahooData?.marketCap || stock.market_cap,
           sector: stock.sector,
           indicators: stockIndicators.map(ind => ({
             Id: ind.Id,
@@ -178,7 +232,9 @@ if (!response || !response.success) {
             timestamp: ind.timestamp
           }))
         };
-      });
+      }));
+
+      return enhancedStocks;
     } catch (error) {
       console.error('Error fetching stocks with indicators:', error);
       toast.error('Failed to load stock data');
@@ -256,7 +312,7 @@ if (!response || !response.success) {
     }
   }
 
-  async getHistoricalData(stockId, period = '1M') {
+async getHistoricalData(stockId, period = '1M') {
     try {
       await delay(300);
       const stock = await this.getById(stockId);
@@ -264,7 +320,53 @@ if (!response || !response.success) {
         throw new Error('Stock not found');
       }
 
-      // Generate mock historical data based on period
+      // Try to get real historical data from Yahoo Finance
+      if (yahooFinance && stock.symbol) {
+        try {
+          const periods = {
+            '1D': { days: 1, interval: '1m' },
+            '1W': { days: 7, interval: '1h' },
+            '1M': { days: 30, interval: '1d' },
+            '3M': { days: 90, interval: '1d' },
+            '6M': { days: 180, interval: '1d' },
+            '1Y': { days: 365, interval: '1d' }
+          };
+
+          const periodConfig = periods[period] || periods['1M'];
+          const endDate = new Date();
+          const startDate = new Date();
+          startDate.setDate(endDate.getDate() - periodConfig.days);
+
+          const historicalData = await yahooFinance.historical(stock.symbol, {
+            period1: Math.floor(startDate.getTime() / 1000),
+            period2: Math.floor(endDate.getTime() / 1000),
+            interval: periodConfig.interval
+          });
+
+          if (historicalData && historicalData.timestamp) {
+            const data = historicalData.timestamp.map((timestamp, index) => ({
+              timestamp: new Date(timestamp * 1000).toISOString(),
+              open: historicalData.indicators?.quote?.[0]?.open?.[index] || stock.price,
+              high: historicalData.indicators?.quote?.[0]?.high?.[index] || stock.price,
+              low: historicalData.indicators?.quote?.[0]?.low?.[index] || stock.price,
+              close: historicalData.indicators?.quote?.[0]?.close?.[index] || stock.price,
+              volume: historicalData.indicators?.quote?.[0]?.volume?.[index] || stock.volume,
+              sma20: null, // Calculate if needed
+              ema20: null  // Calculate if needed
+            })).filter(item => item.close != null);
+
+            return {
+              symbol: stock.symbol,
+              period,
+              data
+            };
+          }
+        } catch (yahooError) {
+          console.warn('Yahoo Finance historical data failed, falling back to mock data:', yahooError);
+        }
+      }
+
+      // Fallback to mock data generation if Yahoo Finance is unavailable
       const periods = {
         '1D': 1,
         '1W': 7, 
