@@ -8,7 +8,9 @@ import Input from '@/components/atoms/Input';
 import FilterControl from '@/components/molecules/FilterControl';
 import ApperIcon from '@/components/ApperIcon';
 import presetService from '@/services/api/presetService';
-const FilterPanel = ({ 
+import filterService from '@/services/api/filterService';
+
+const FilterPanel = ({
   filters, 
   onFiltersChange, 
   onClearAll,

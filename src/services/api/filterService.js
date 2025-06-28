@@ -6,15 +6,31 @@ class FilterService {
     this.initializeClient();
   }
 
-  initializeClient() {
+initializeClient() {
     try {
-      const { ApperClient } = window.ApperSDK;
-      this.apperClient = new ApperClient({
-        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
-        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
-      });
+      // Check if window.ApperSDK is available (Chrome timing fix)
+      if (typeof window !== 'undefined' && window.ApperSDK) {
+        const { ApperClient } = window.ApperSDK;
+        this.apperClient = new ApperClient({
+          apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+          apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+        });
+      } else {
+        // Retry initialization after a short delay for Chrome
+        setTimeout(() => {
+          if (window.ApperSDK && !this.apperClient) {
+            this.initializeClient();
+          }
+        }, 100);
+      }
     } catch (error) {
       console.error('Failed to initialize ApperClient:', error);
+      // Retry once more after delay
+      setTimeout(() => {
+        if (!this.apperClient) {
+          this.initializeClient();
+        }
+      }, 500);
     }
   }
 
